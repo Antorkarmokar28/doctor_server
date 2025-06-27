@@ -1,8 +1,10 @@
+/* eslint-disable no-undef */
 // getting-started.js
-import mongoose from "mongoose";
-import app from "./app";
-import config from "./app/config";
-
+import mongoose from 'mongoose';
+import app from './app';
+import config from './app/config';
+import { IncomingMessage, Server, ServerResponse } from 'http';
+let server: Server<typeof IncomingMessage, typeof ServerResponse> | undefined;
 async function mainServer() {
   try {
     await mongoose.connect(config.database_url as string);
@@ -15,3 +17,16 @@ async function mainServer() {
 }
 // main server called
 mainServer();
+// using unhandledRejection for asynchonouse code
+process.on('unhandledRejection', () => {
+  if (server) {
+    server.close(() => {
+      process.exit(1);
+    });
+  }
+  process.exit(1);
+});
+// using uncaughtException for synchonouse code
+process.on('uncaughtException', () => {
+  process.exit(1);
+});
