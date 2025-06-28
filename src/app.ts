@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(cors({ origin: '*', credentials: true }));
 // hit the application route
-app.use('/', router);
+app.use('/api', router);
 const testServer = async (req: Request, res: Response) => {
   res.send({ status: true, message: 'Server is running' });
 };

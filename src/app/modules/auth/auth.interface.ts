@@ -1,10 +1,11 @@
 /* eslint-disable no-unused-vars */
-import { Model } from 'mongoose';
-import { User_Role } from './user.constant';
+import { Document, Model } from 'mongoose';
+import { User_Role } from './auth.constant';
 
-export interface IUser {
-  _id?: string;
-  role: 'doctor' | 'patient' | 'admin';
+export type UserRole = 'doctor' | 'patient' | 'admin';
+
+export interface IUser extends Document {
+  role: UserRole;
   name: string;
   email: string;
   phone?: string;
@@ -14,7 +15,11 @@ export interface IUser {
   hospitalFloor?: string;
   age?: number;
   gender?: 'male' | 'female' | 'other';
-  profileImage?: string;
+}
+
+export interface ILoginUser {
+  email: string;
+  password: string;
 }
 
 export interface UserModel extends Model<IUser> {

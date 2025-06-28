@@ -1,8 +1,9 @@
 /* eslint-disable @typescript-eslint/no-this-alias */
 import { model, Schema } from 'mongoose';
-import { IUser, UserModel } from './user.interface';
+import { IUser, UserModel } from './auth.interface';
 import bcrypt from 'bcrypt';
 import config from '../../config';
+// user registration schema defination
 const userRegistrationSchema = new Schema<IUser>(
   {
     role: {
@@ -19,7 +20,6 @@ const userRegistrationSchema = new Schema<IUser>(
     hospitalFloor: String, // for doctor
     age: Number, // for patient
     gender: { type: String, enum: ['male', 'female', 'other'] },
-    profileImage: String,
   },
   { timestamps: true }
 );
