@@ -9,8 +9,8 @@ import { User } from '../modules/auth/auth.model';
 
 const auth = (...requiredRoles: TUserRole[]) => {
   return catchAsync(async (req: Request, res: Response, next: NextFunction) => {
-    const token = req.headers.authorization;
-
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
     // Token Check
     if (!token) {
       throw new AppError(
@@ -28,19 +28,19 @@ const auth = (...requiredRoles: TUserRole[]) => {
       ) as JwtPayload;
     } catch (error) {
       throw new AppError(StatusCodes.UNAUTHORIZED, 'Invalid or expired token');
-      console.log(error)
+      console.log(error);
     }
 
     const { email, role } = decoded;
 
-    // 🔍 Check if user exists
+    // Check if user exists
     const user = await User.isUserIsExitsByEmail(email);
 
     if (!user) {
       throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
     }
 
-    // 🔐 Check if user has required role
+    // Check if user has required role
     if (requiredRoles.length && !requiredRoles.includes(role)) {
       throw new AppError(
         StatusCodes.FORBIDDEN,
@@ -48,7 +48,7 @@ const auth = (...requiredRoles: TUserRole[]) => {
       );
     }
 
-    // 🧾 Attach user info to request
+    // Attach user info to request
     req.user = {
       _id: user._id,
       email: user.email,
