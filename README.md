@@ -4,8 +4,8 @@ This is a role-based REST API built with **Node.js**, **Express**, **MongoDB**, 
 
 ## 🚀 Live Demo & Resources
 
-- 🔗 **Live Server**: _Coming Soon_
-- 📮 **Postman Collection**: [Download Collection](#) _(Add your exported Postman link)_
+- 🔗 **Live Server**: (https://doctor-server-beige.vercel.app/)
+- 📮 **Postman Collection**: (https://drive.google.com/file/d/18CgczSC4JqK5qhMm27XmaxEbfhzGBnht/view?usp=sharing)
 - 🧑‍💻 **GitHub Repo**: https://github.com/Antorkarmokar28/doctor_server.git
 
 ---
