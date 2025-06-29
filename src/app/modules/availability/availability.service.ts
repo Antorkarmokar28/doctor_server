@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes';
 import AppError from '../../error/appError';
 import { User } from '../auth/auth.model';
-import { IAvailability } from './availability.interface';
+import { IAvailability, ITimeSlot } from './availability.interface';
 import { Availability } from './availability.model';
 
 const createAvailabilityIntoDB = async (payload: Partial<IAvailability>) => {
@@ -40,8 +40,29 @@ const updateAvailabilityIntoDB = async (
   });
 };
 
+const checkSlotAvailability = async (
+  doctorId: string,
+  day: string,
+  timeSlot: ITimeSlot
+) => {
+  // Verify doctor exists
+  const doctor = await User.findById(doctorId);
+  if (!doctor || doctor.role !== 'doctor') {
+    throw new AppError(StatusCodes.FORBIDDEN, 'Invalid doctor ID');
+  }
+
+  return await Availability.findOne({
+    doctorId,
+    day,
+    'slots.start': timeSlot.start,
+    'slots.end': timeSlot.end,
+    isAvailable: true,
+  });
+};
+
 export const AvailabilityService = {
   createAvailabilityIntoDB,
   getDoctorAvailabilityFromDB,
   updateAvailabilityIntoDB,
+  checkSlotAvailability
 };
